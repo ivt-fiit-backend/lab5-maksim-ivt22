@@ -63,6 +63,3 @@ class Laureat(Resource):
             return jsonify(laureats[pk])
         else:
             abort(404)
-
-if __name__ == "__main__":
-    app.run(debug=True)
