@@ -42,12 +42,22 @@ def award_object(pk):
 
 
 @api.route("/v2/laureats/")
-class LaureatsList(Resource):
-    def get(self):
-        return jsonify({
-            "total": len(laureats),
-            "items": laureats
-        })
+def laureats_list():
+    try:
+        p = int(request.args.get('p', 0))
+        if p < 0:
+            raise ValueError
+    except ValueError:
+        return abort(400)
+    
+    page = laureats[p * 50:(p + 1)*50]
+    
+    return jsonify({
+        'page': p,
+        'count_on_page': PAGE_SIZE,
+        'total': len(laureats),
+        'items': page,
+    })
 
 
 @api.route("/v2/laureat/<int:pk>/")
